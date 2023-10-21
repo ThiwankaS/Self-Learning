@@ -1,0 +1,178 @@
+Counter after refactor
+....................................................................
+const App = () => {
+  const [ counter, setCounter ] = useState(0); 
+  
+  const increaseByOne = () => setCounter(counter + 1);
+  const decreaseByOne = () => setCounter(counter - 1); 
+  const setToZero = () => setCounter(0); 
+  return (
+    <div>
+      <Display counter={counter}/>
+      <Button handelClick={increaseByOne} text='plus'/>
+      <Button handelClick={setToZero} text='zero'/>
+      <Button handelClick={decreaseByOne} text='minus'/>
+    </div>
+  )
+}
+//Display component after refactored
+const Display = ({ counter }) => <div>{counter}</div> ; 
+//Button component after refactored 
+const Button = ({ text , handelClick }) => <button onClick={handelClick}>{text}</button>;
+
+export default App;
+
+Two state 
+....................................................................
+const App = () => {
+  const [left, setLeft] = useState(0); 
+  const [right, setRight] = useState(0); 
+  return(
+    <div>
+    <p>{left}</p>
+    <button onClick={() => setLeft(left + 1)}>left</button>
+    <button onClick={() => setRight(right + 1)}>right</button>
+    <p>{right}</p>
+    </div>
+  )
+}
+
+export default App; 
+
+Complex state - code refactored  
+....................................................................
+const App = () => {
+  const [clicks, setClick] = useState({left : 0, right : 0});
+  
+  const handelLeftClick = () =>  setClick({ ...clicks , left : clicks.left + 1});
+  const handelRightClick = () => setClick({ ...clicks , right : clicks.right + 1 }); 
+
+  return(
+    <div>
+    <p>{clicks.left}</p>
+    <button onClick={handelLeftClick}>left</button>
+    <button onClick={handelRightClick}>right</button>
+    <p>{clicks.right}</p>
+    </div>
+  )
+}
+
+export default App; 
+
+Conditional rendering
+....................................................................
+
+const App = () => {
+  const [ left , setLeft ] = useState(0); 
+  const [ right , setRight ] = useState(0); 
+  const [ allClicks, setAllClicks ] = useState([]); 
+  const [ total, setTotal ] = useState(0);
+
+  const handelLeftClick = () => {
+    setAllClicks(allClicks.concat('L')); 
+    const upDatedLeft = left + 1; 
+    setLeft(upDatedLeft); 
+    setTotal(upDatedLeft + right); 
+  }
+
+  const handelRightClick = () => {
+    setAllClicks(allClicks.concat('R')); 
+    const upDatedRight = right + 1; 
+    setRight(upDatedRight); 
+    setTotal(left + upDatedRight); 
+  }
+
+  return(
+    <div>
+      <p>{left}</p>
+      <Button handelClick={handelLeftClick} text='Left'/>
+      <Button handelClick={handelRightClick} text='Right'/>
+      <p>{right}</p>
+      <History allClicks={allClicks} total={total}/>
+      
+    </div>
+  )
+}
+
+const Button = (props) => {
+  const { handelClick , text } = props; 
+  return( 
+    <button onClick={handelClick}>{text}</button>
+  )
+}
+
+const History = (props) => {
+  if (props.allClicks.length === 0){
+    return(<div>the app is used by pressing the buttons</div>)
+  } else {
+    return (
+    <div>
+      <p>{props.allClicks.join(' ')}</p>
+      <p>Total : {props.total}</p>
+    </div>)
+
+  }
+}
+
+export default App;  
+
+Passing Event Handlers to Child Components 
+....................................................................
+const App = () => {
+  const [ value, setValue] = useState(10);
+
+  const setToValue = (value) => () => { 
+    console.log('Value now', value);
+    setValue(value); 
+   }
+
+  return (
+    <div>
+      <Display value={value}/>
+      <button onClick={setToValue(1000)}>Thousand</button>
+      <button onClick={setToValue(0)}>Reset to Zero</button>
+       <button onClick={setToValue(value + 1)}>Increment by one </button>
+    </div>
+  )
+} 
+
+const Display = props => <div>{props.value}</div>  
+
+export default App; 
+
+
+package.json - default 
+............................
+
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description" : " ",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "server": "json-server -p3001 --watch db.json"
+  },
+  "dependencies": {
+    "axios": "^1.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "json-server": "^0.17.4",
+    "vite": "^4.4.5"
+  },
+  "author": "Thiwanka Somachandra",
+  "license": "MIT"
+}
+
