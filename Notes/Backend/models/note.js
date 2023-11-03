@@ -1,12 +1,16 @@
+
+const logger = require('../utils/logger')
+const config = require('../utils/config')
 require('dotenv').config()
 const mongoose = require('mongoose')
 
-const url = process.env.MONGODB_URL
+
+const url = config.MONGODB_URL
 
 mongoose.set('strictQuery',false)
-console.log('connecting to DB.....')
-mongoose.connect(url).then((result) => { console.log('connection sucessful!')
-}).catch((error) => { console.log('connection error',error.message)
+logger.info('connecting to DB.....')
+mongoose.connect(url).then((result) => { logger.info('connection sucessful!')
+}).catch((error) => { logger.info('connection error',error.message)
 })
 
 const noteSchema = new mongoose.Schema({ content : { type : String, minLength : 5, required : true }, important : Boolean })
