@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
+const TEST_MONGODB_URL  = require('./utils/config').TEST_MONGODB_URL
 
-
-const url = 'mongodb+srv://thivankas:BnUTL6aLiVHJKAmD@cluster0.fbgbcsu.mongodb.net/testNoteApp?retryWrites=true&w=majority'
 
 mongoose.set('strictQuery',false)
-mongoose.connect(url)
+mongoose.connect(TEST_MONGODB_URL)
 
 const noteSchema = new mongoose.Schema({
   content: String,
