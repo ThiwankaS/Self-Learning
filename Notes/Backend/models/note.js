@@ -16,7 +16,20 @@ mongoose.connect(url).then((result) => {
   logger.info('connection error',error.message)
 })
 
-const noteSchema = new mongoose.Schema({ content : { type : String, minLength : 5, required : true }, important : Boolean })
+const noteSchema = new mongoose.Schema({
+  content : {
+    type : String,
+    minLength : 5,
+    required : true
+  },
+  important : Boolean,
+  user : [
+    {
+      type : mongoose.Schema.Types.ObjectId,
+      ref : 'User'
+    }
+  ]
+})
 
 noteSchema.set('toJSON',{ transform : (document,returnedObject) => {
   returnedObject.id = returnedObject._id.toString()
@@ -25,4 +38,6 @@ noteSchema.set('toJSON',{ transform : (document,returnedObject) => {
 }
 })
 
-module.exports = mongoose.model('Note',noteSchema)
+const Note = mongoose.model('Note',noteSchema)
+
+module.exports = Note
