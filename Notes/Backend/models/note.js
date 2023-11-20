@@ -8,13 +8,12 @@ const mongoose = require('mongoose')
 const url = config.MONGODB_URL
 
 mongoose.set('strictQuery',false)
-logger.info('connecting to DB.....')
 
-mongoose.connect(url).then((result) => {
-  logger.info('connection sucessful!')
+/*mongoose.connect(url).then((result) => {
+  logger.info('connection sucessful! + here still inside note Js!')
 }).catch((error) => {
   logger.info('connection error',error.message)
-})
+})*/
 
 const noteSchema = new mongoose.Schema({
   content : {
@@ -28,7 +27,7 @@ const noteSchema = new mongoose.Schema({
       type : mongoose.Schema.Types.ObjectId,
       ref : 'User'
     }
-  ]
+  ],
 })
 
 noteSchema.set('toJSON',{ transform : (document,returnedObject) => {

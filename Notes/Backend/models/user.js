@@ -1,4 +1,3 @@
-const { truncate } = require('lodash')
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
@@ -10,12 +9,12 @@ const userSchema = mongoose.Schema({
   },
   name : String,
   passwordHash : String,
-  note : [
+  notes : [
     {
       type : mongoose.Schema.Types.ObjectId,
       ref : 'Note'
     }
-  ]
+  ],
 })
 
 userSchema.plugin(uniqueValidator)

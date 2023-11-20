@@ -10,10 +10,8 @@ const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
 mongoose.set('strictQuery',false)
-
-logger.info('connecting to ',config.MONGODB_URL)
-
-mongoose.connect(config.MONGODB_URL).then(() => logger.info('connected to MongoDB')).catch(error => logger.error('error connecting to MongoDB',error.message))
+logger.info('Connecting to DB...')
+mongoose.connect(config.MONGODB_URL).then(() => logger.info('Connection : Successfull')).catch(error => logger.error('Connection : Unsuccessfull -> ',error.message))
 
 app.use(cors())
 app.use(express.static('dist'))
