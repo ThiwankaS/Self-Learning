@@ -1,79 +1,143 @@
-import { useEffect, useState } from 'react';
-import Note from './components/Note';
-import axios from 'axios';
-import noteServices from './services/notes'; 
-
-
+import { useState, useEffect } from 'react'
+import Note from './components/Note'
+import noteService from './services/notes'
+import loginService from './services/login'
 
 const App = (props) => { 
 
-  const [ notes,setNotes ] = useState(null); 
-  const [ newNote,setNewNote] = useState(''); 
-  const [ showAll, setShowAll ] = useState(false); 
-  const [ errorMessage,setErrorMessage ] = useState(null);
+  const [ notes,setNotes ] = useState(null)
+  const [ newNote,setNewNote] = useState('') 
+  const [ showAll, setShowAll ] = useState(false) 
+  const [ errorMessage,setErrorMessage ] = useState(null)
+  const [ username,setUsername ] = useState('')
+  const [ password,setPassword ] = useState('')
+  const [ user,setUser ] = useState(null)
 
   useEffect(() => {
-    noteServices.getAll().then(initialNotes => setNotes(initialNotes));
-  },[]); 
+    noteService
+      .getAll()
+        .then(initialNotes => setNotes(initialNotes))
+  },[])
   
   const addNote = (event) => {
-    event.preventDefault(); 
+    event.preventDefault() 
     const noteObject = {
       content : newNote, 
       important : Math.random() > 0.5
     }
 
-    noteServices.creat(noteObject).then(returnedNote => {
-      setNotes(notes.concat(returnedNote));
-      setNewNote(''); 
-    })
+    noteService
+      .creat(noteObject)
+        .then(returnedNote => {
+          setNotes(notes.concat(returnedNote))
+          setNewNote('')
+        })
 
+  }
+
+  const handelLogin = async (event) => {
+    event.preventDefault()
+    try{
+        const user = await loginService.login({ username,password, })
+        setUser(user)
+        noteService.setToken(user.token)
+        setUsername('')
+        setPassword('')
+    } catch(exception) {
+      setErrorMessage('Wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      },5000)
+    }
   }
 
   if (!notes) {
-    return null; 
+    return null
   }
 
-  const notesToShow = showAll ? notes : notes.filter((note)=> note.important === true); 
+  const notesToShow = showAll ? notes : notes.filter((note)=> note.important === true)
 
   const handelNoteChange = (event) => {
-      setNewNote(event.target.value); 
+      setNewNote(event.target.value) 
   }
 
   const toggleImportanceOf = (id) => {
-    const note = notes.find(n => n.id === id);
-    const changedNote = {...note,important: !note.important};
+    const note = notes.find(n => n.id === id)
+    const changedNote = {...note,important: !note.important}
 
-    noteServices.update(id,changedNote).then(returnedNote => {
-      setNotes(notes.map(note => note.id !== id ? note : returnedNote));
-    }).catch(error => {
-      setErrorMessage(
-        `Note ' ${note.content} ' was already deleted from the server`
-      )
-      setTimeout(()=>{
-        setErrorMessage(null);
-      },5000)
-      setNotes(notes.filter(n => n.id !== id))
-    })
+    noteService
+      .update(id,changedNote)
+        .then(returnedNote => {
+          setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+         })
+        .catch(error => {
+          setErrorMessage(
+            `Note ' ${note.content} ' was already removed from the server`
+          )
+          setTimeout(()=>{
+            setErrorMessage(null)
+           },5000)
+          setNotes(notes.filter(n => n.id !== id))
+         })
 
   }
 
+const loginForm = () => (
+    <form onSubmit={handelLogin}>
+      <h3>Login</h3>
+        <div>
+          Username : <input 
+                        type="text"
+                        value={username}
+                        name="Username"
+                        onChange={({target}) => setUsername(target.value)}
+                      />
+        </div>
+        <div>
+          Password : <input 
+                        type="text"
+                        value={password}
+                        name="Password"
+                        onChange={({target}) => setPassword(target.value)}
+                      />
+        </div> 
+      <button type='submit'>Login</button>        
+    </form>
+)
+
+const noteForm = () => (
+    <div>
+        <form onSubmit={addNote}>
+        <h3>Add new note</h3>
+          <input value={newNote} onChange={handelNoteChange}/>
+          <button type="submit">Save</button>
+      </form>
+    </div>
+)
+
   return(
     <div>
-      <h1>Notes</h1>
+      <h1>Notes app</h1>
       <Notification message={errorMessage}/>
+      <br/>
+      {!user&& loginForm()}
+      <br/>
+      {user && <div>
+                <p>{ user.username } logged in</p>
+                {noteForm()}
+              </div>}
+      <br/>
       <div>
-        <button onClick={()=>setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all'}
-        </button>
+        <h3>Previuos notes</h3>
+        <div>
+            <button onClick={()=>setShowAll(!showAll)}>
+              show {showAll ? 'important' : 'all'}
+            </button>
+        </div>
+        <ul>
+          {notesToShow.map(note => <Note key={note.id} note={note} toggleImportance={()=> toggleImportanceOf(note.id)}/>)}
+        </ul>
       </div>
-      <ul>
-        {notesToShow.map(note => <Note key={note.id} note={note} toggleImportance={()=> toggleImportanceOf(note.id)}/>)}
-      </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handelNoteChange}/>
-        <button type="submit">Save</button>
-      </form>
     </div>
   )
 }

@@ -25,7 +25,7 @@ const getTokenFrom = (request) => {
   return null
 }
 
-notesRouter.post('/',async (request,response,next) => {
+notesRouter.post('/',async (request,response) => {
   const body = request.body
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if(!decodedToken.id){
@@ -43,18 +43,18 @@ notesRouter.post('/',async (request,response,next) => {
   response.status(201).json(savedNote)
 })
 
-notesRouter.delete('/:id', async (request,response,next) => {
+notesRouter.delete('/:id', async (request,response) => {
   await Note.findByIdAndRemove(request.params.id)
   response.status(204).end()
 })
 
-notesRouter.put('/:id', async (request,response,next) => {
+notesRouter.put('/:id', async (request,response) => {
   const body = request.body
   const note ={
     content : body.content,
     important : body.important
   }
-  const updatedNote = await Note.findByIdAndUpdate(request,note, { new : true })
+  const updatedNote = await Note.findByIdAndUpdate(request.params.id,note, { new : true })
   response.json(updatedNote)
 })
 
