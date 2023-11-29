@@ -92,6 +92,21 @@ const App = (props) => {
 
   }
 
+const handelLogOut = async (event) => {
+  try{
+      setUser(null)
+      noteService.setToken(user.token)
+      window.localStorage.removeItem('loggedNoteappUser')
+      setUsername('')
+      setPassword('')
+  } catch(exception) {
+    setErrorMessage('Opps! Something went wrong')
+    setTimeout(() => {
+      setErrorMessage(null)
+    },5000)
+  }
+}
+
 const loginForm = () => (
     <form onSubmit={handelLogin}>
       <h3>Login</h3>
@@ -125,6 +140,12 @@ const noteForm = () => (
     </div>
 )
 
+const logOutForm = () => (
+  <div>
+    <button onClick={()=>handelLogOut()}>Log Out</button>
+  </div>
+)
+
   return(
     <div>
       <h1>Notes app</h1>
@@ -134,6 +155,7 @@ const noteForm = () => (
       <br/>
       {user && <div>
                 <p>{ user.username } logged in</p>
+                {logOutForm()}
                 {noteForm()}
               </div>}
       <br/>
