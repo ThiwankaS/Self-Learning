@@ -11,13 +11,13 @@ const LoginForm = (props) => (
         </div>
         <div>
           Password : <input 
-                        type="text"
+                        type="password"
                         value={props.password}
                         name="Password"
                         onChange={props.handlePasswordChange}
                       />
         </div> 
-      <button type='submit'>Login</button>        
+      <button type='submit'>{props.buttonLable}</button>        
     </form>
 )
 
