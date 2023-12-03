@@ -12,7 +12,6 @@ import NoteForm from './components/NoteForm'
 const App = (props) => { 
 
   const [ notes,setNotes ] = useState(null)
-  const [ newNote,setNewNote] = useState('') 
   const [ showAll, setShowAll ] = useState(false) 
   const [ errorMessage,setErrorMessage ] = useState(null)
   const [ username,setUsername ] = useState('')
@@ -35,20 +34,12 @@ const App = (props) => {
     }
   },[])
   //Function to add a new note 
-  const addNote = (event) => {
-    event.preventDefault() 
-    const noteObject = {
-      content : newNote, 
-      important : Math.random() > 0.5
-    }
-
+  const addNote = (noteObject) => {
     noteService
       .creat(noteObject)
         .then(returnedNote => {
           setNotes(notes.concat(returnedNote))
-          setNewNote('')
         })
-
   }
   //Function to handle user log in 
   const handleLogin = async (event) => {
@@ -116,11 +107,7 @@ const handleLogOut = async (event) => {
 //Note component 
 const noteForm = () => (
   <Togglable buttonLable='new note'>
-    <NoteForm 
-      onSubmit={addNote}
-      value={newNote}
-      handleChange={handleNoteChange}
-    />
+    <NoteForm createNote={addNote}/>
   </Togglable>
 )
 //Log out component 
