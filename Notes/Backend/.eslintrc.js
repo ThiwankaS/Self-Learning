@@ -5,18 +5,8 @@ module.exports = {
     'es2021': true,
     'jest' : true
   },
-  'overrides': [
-    {
-      'env': {
-        'node': true
-      },
-      'files': ['.eslintrc.{js,cjs}'],
-    }
-  ],
   'parser' : 'babel-eslint',
-  'parserOptions': {
-    'sourceType': 'module'
-  },
+  'parserOptions': { 'ecmaVersion' : 'latest','sourceType': 'module' },
   'rules': {
     'indent': ['error',2],
     'linebreak-style': ['error','unix'],
