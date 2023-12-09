@@ -149,7 +149,7 @@ const App = (props) => {
       {!user&& loginForm()}
       <br/>
       {user && <div>
-        <p>{ user.username } logged in</p>
+        <p>{ user.name } logged in</p>
         {logOutForm()}
         {noteForm()}
       </div>}
