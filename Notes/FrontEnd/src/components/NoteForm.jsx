@@ -20,8 +20,8 @@ const NoteForm = ({ createNote }) => {
     <div className='formDiv'>
       <h3>Create a new note</h3>
       <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleChange} placeholder='write note content here'/>
-        <button type="submit">Save</button>
+        <input id='new-note' value={newNote} onChange={handleChange} placeholder='write note content here'/>
+        <button id='save-button' type="submit">Save</button>
       </form>
     </div>
   )
