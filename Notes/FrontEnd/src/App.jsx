@@ -48,7 +48,7 @@ const App = (props) => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try{
-      const user = await loginService.login({ username,password, })
+      const user = await loginService.login({ username,password })
       setUser(user)
       noteService.setToken(user.token)
       window.localStorage.setItem('loggedNoteappUser',JSON.stringify(user))
