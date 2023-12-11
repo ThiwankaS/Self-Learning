@@ -14,7 +14,7 @@ const App = (props) => {
   const noteFormRef = useRef()
 
   const [ notes,setNotes ] = useState(null)
-  const [ showAll, setShowAll ] = useState(false)
+  const [ showAll, setShowAll ] = useState(true)
   const [ errorMessage,setErrorMessage ] = useState(null)
   const [ username,setUsername ] = useState('')
   const [ password,setPassword ] = useState('')
