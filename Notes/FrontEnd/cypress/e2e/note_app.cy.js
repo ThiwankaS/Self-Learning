@@ -57,6 +57,7 @@ describe('Note App',() => {
         cy.contains('second note').parent().find('button').as('theButton')
         cy.get('@theButton').click()
         cy.get('@theButton').should('contain','make not important')
+          .debug()
       })
     })
   })
