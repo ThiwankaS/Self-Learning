@@ -1,14 +1,14 @@
 describe('Note App',() => {
 
   beforeEach(() => {
-    cy.request('POST','http://localhost:3001/api/testing/reset')
+    cy.request('POST',`${Cypress.env('BACKEND')}/testing/reset`)
     const user = {
       name: 'Matti Luukkainen',
       username: 'mluukkai',
       password: 'salainen'
     }
-    cy.request('POST','http://localhost:3001/api/users',user)
-    cy.visit('http://localhost:5173/')
+    cy.request('POST',`${Cypress.env('BACKEND')}/users`,user)
+    cy.visit('')
   })
 
   it('Front page can be opened', () => {
@@ -39,10 +39,7 @@ describe('Note App',() => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      cy.contains('log in').click()
-      cy.get('#username').type('mluukkai')
-      cy.get('#password').type('salainen')
-      cy.get('#login-button').click()
+      cy.login({ username :'mluukkai',password: 'salainen' })
     })
     it('a new note can be created',() => {
       cy.contains('Create a new note')
@@ -52,9 +49,10 @@ describe('Note App',() => {
     })
     describe('and a note exists',() => {
       beforeEach(() => {
-        cy.contains('Create a new note')
-        cy.get('#new-note').type('another note cypress')
-        cy.get('#save-button').click()
+        cy.createNote({
+          content : 'another note cypress',
+          important : true
+        })
       })
       it('it can be made not important', () => {
         cy.contains('another note cypress')
