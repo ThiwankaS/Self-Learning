@@ -5,26 +5,31 @@ import noteReducer from './reducers/noteReducer'
 const store = createStore(noteReducer)
 
 const generateID = () => (Math.random()*1000000).toFixed(0)
-const App = () => {
-
-  const addNote = (event) => {
-    event.preventDefault()
-    const content = event.target.note.value
-    event.target.note.value =''
-    store.dispatch({
+const createNote = (content) => {
+    return {
         type : 'NEW_NOTE',
         payload : {
             content,
             important : true,
             id : generateID()
         }
-    })
-  }
-  const toggleImportance = (id) => {
-    store.dispatch({
+    }
+}
+const toggleImportanceOf = (id) => {
+    return {
         type : 'TOGGLE_IMPORTANCE',
         payload : { id }
-    })
+    }
+}
+const App = () => {
+  const addNote = (event) => {
+    event.preventDefault()
+    const content = event.target.note.value
+    event.target.note.value =''
+    store.dispatch(createNote(content))
+  }
+  const toggleImportance = (id) => {
+    store.dispatch(toggleImportanceOf(id))
   }
   return (
     <div>
@@ -47,9 +52,7 @@ const App = () => {
     </div>
   )
 }
-
 const root = ReactDOM.createRoot(document.getElementById('root'))
-
 const renderApp = () => {
     root.render(<App />)
 }
