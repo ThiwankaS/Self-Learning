@@ -1,14 +1,19 @@
 {
   "notes": [
     {
-      "content" : "react query simplifies the commiunication with the backend",
+      "content": "react query simplifies the commiunication with the backend",
       "important": true,
       "id": 1
     },
     {
-      "content" : "useReduce is an alternative way for data management",
+      "content": "useReduce is an alternative way for data management",
       "important": false,
       "id": 2
+    },
+    {
+      "content": "testing note app",
+      "important": false,
+      "id": 3
     }
   ]
 }
