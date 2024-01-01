@@ -1,0 +1,14 @@
+{
+  "notes": [
+    {
+      "content": "Marmid is amazing",
+      "important": false,
+      "id": 1
+    },
+    {
+      "content": "Single page, huh ?",
+      "important": false,
+      "id": 2
+    }
+  ]
+}

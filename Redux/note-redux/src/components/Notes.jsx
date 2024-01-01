@@ -4,28 +4,33 @@ import { useSelector,useDispatch } from 'react-redux'
 
 const Note = ({ note,handelClick }) => {
     return(
-        <li onClick={handelClick}>{note.content}<strong> {note.important ? ' important ' : ''}</strong></li>
+        <li onClick={handelClick}>
+            {note.content}
+            <strong> {note.important ? ' important ' : ''}</strong>
+        </li>
     )
 }
 
 const Notes = () => {
-    const notes = useSelector(({ filter, notes }) => {
-        if(filter === 'ALL'){
-            return notes
-        } 
-        return filter === 'IMPORTANT' 
-            ? notes.filter(note => note.important)
-            : notes.filter(note => !note.important)
-    })
     const dispatch = useDispatch()
+    const notes = useSelector( state => {
+        if(state.filter === 'ALL'){
+            return state.notes
+        } 
+        return state.filter === 'IMPORTANT' 
+            ? state.notes.filter(note => note.important)
+            : state.notes.filter(note => !note.important)
+    })
+    
     return (
         <ul>
-            {notes.map(note => 
-                <Note key={note.id}
+            { notes.map(note => 
+                <Note 
+                      key={note.id}
                       note={note}
                       handelClick={() => dispatch(toggleImportanceOf(note.id))}
                 />
-            )}
+            )} 
         </ul>
     )
 }
