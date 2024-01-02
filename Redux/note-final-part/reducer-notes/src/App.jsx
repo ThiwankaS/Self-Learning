@@ -9,17 +9,27 @@ const counterReducer = (state,action) => {
   }
 }
 
+const Display = ({counter}) => {
+  return <div>{counter}</div>
+}
+
+const Button = ({lable,dispatch,type}) => {
+  return (
+    <button onClick={() => dispatch({type})}>{lable}</button>
+  ) 
+}
+
 const App = () => {
 
   const [ counter, counterDispatch ] = useReducer(counterReducer,0)
 
   return (
     <div>
-      <div>{counter}</div>
+      <Display counter={counter} />
       <div>
-        <button onClick={() => counterDispatch({type : 'INC'})}>+</button>
-        <button onClick={() => counterDispatch({type : 'DEC'})}>-</button>
-        <button onClick={() => counterDispatch({type : 'ZEO'})}>0</button>
+        <Button lable='+' dispatch={counterDispatch} type='INC' />
+        <Button lable='-' dispatch={counterDispatch} type='DEC' />
+        <Button lable='0' dispatch={counterDispatch} type='ZEO' />
       </div>
     </div>
   )
