@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, 
+         Routes, Route, Link 
+} from 'react-router-dom'
 
 const Home = () => (
   <div>
@@ -13,7 +16,6 @@ const Notes = ({notes}) => (
     <ul>
       {notes.map(note => <li key={note.id}>{note.content}</li>)}
     </ul>
-    <i>Note app, Department of Computer Science 2023</i>
   </div>
 )
 
@@ -29,8 +31,7 @@ const User = () => (
 )
 
 const App = ()  => {
-
-  const [page,setPage] = useState('home')
+  
   const [notes,setNotes] = useState([
     {
       id: 1,
@@ -52,34 +53,26 @@ const App = ()  => {
     }
   ])
 
-  const toPage = (page) => (event) => {
-    event.preventDefault()
-    setPage(page)
-  }
-
-  const content = () => {
-    if (page === 'home'){
-      return <Home />
-    } else if ( page === 'notes'){
-      return <Notes notes={notes}/>
-    } else if (page === 'users') {
-      return <User />
-    }
-  }
-
   const padding = {
     padding : 5
   }
 
   return (
-    <div>
+    <Router>
       <div>
-        <a href='' onClick={toPage('home')} style={padding}>home</a>
-        <a href='' onClick={toPage('notes')} style={padding}>notes</a>
-        <a href='' onClick={toPage('users')} style={padding}>users</a>
+        <Link style={padding} to='/'>home</Link>
+        <Link style={padding} to='/notes'>notes</Link>
+        <Link style={padding} to='/users'>users</Link>
       </div>
-      {content()}
-    </div>
+      <Routes>
+        <Route path='/'       element={<Home />}/>
+        <Route path='/notes'  element={<Notes notes={notes}/>} />
+        <Route path='/users'  element={<User />} />
+      </Routes>
+      <div>
+        <i>Note app, Department of Computer Science 2023</i>
+      </div>
+    </Router>
   )
 }
 
