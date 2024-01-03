@@ -7,8 +7,14 @@ const Home = () => (
   </div>
 )
 
-const Notes = () => (
-  <div><h2> Notes </h2></div>
+const Notes = ({notes}) => (
+  <div>
+    <h2> Notes </h2>
+    <ul>
+      {notes.map(note => <li key={note.id}>{note.content}</li>)}
+    </ul>
+    <i>Note app, Department of Computer Science 2023</i>
+  </div>
 )
 
 const User = () => (
@@ -25,6 +31,26 @@ const User = () => (
 const App = ()  => {
 
   const [page,setPage] = useState('home')
+  const [notes,setNotes] = useState([
+    {
+      id: 1,
+      content: 'HTML is easy',
+      important: true,
+      user: 'Matti Luukkainen'
+    },
+    {
+      id: 2,
+      content: 'Browser can execute only JavaScript',
+      important: false,
+      user: 'Matti Luukkainen'
+    },
+    {
+      id: 3,
+      content: 'Most important methods of HTTP-protocol are GET and POST',
+      important: true,
+      user: 'Arto Hellas'
+    }
+  ])
 
   const toPage = (page) => (event) => {
     event.preventDefault()
@@ -35,7 +61,7 @@ const App = ()  => {
     if (page === 'home'){
       return <Home />
     } else if ( page === 'notes'){
-      return <Notes />
+      return <Notes notes={notes}/>
     } else if (page === 'users') {
       return <User />
     }
