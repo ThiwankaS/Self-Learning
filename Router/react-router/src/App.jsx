@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, 
-         Routes, Route, Link, useParams
+         Routes, Route, Link, useParams, useNavigate, Navigate
 } from 'react-router-dom'
 
 const Home = () => (
@@ -46,8 +46,29 @@ const User = () => (
   </div>
 )
 
+const Login = (props) => {
+  const navigate = useNavigate()
+  const onSubmit = (event) => {
+    event.preventDefault()
+    props.onLogin('mluukkai')
+    navigate('/')
+  }
+  
+  return (
+    <div>
+      <h2>login</h2>
+      <form onSubmit={onSubmit}>
+        <div>username<input type='text'/></div>
+        <div>password<input type='password'/></div>
+        <div><button type='submit'>login</button></div>
+      </form>
+    </div>
+  )
+}
+
 const App = ()  => {
   
+  const [user,setUser] = useState(null)
   const [notes,setNotes] = useState([
     {
       id: 1,
@@ -69,6 +90,10 @@ const App = ()  => {
     }
   ])
 
+  const login = (user) => {
+    setUser(user)
+  }
+
   const padding = {
     padding : 5
   }
@@ -79,12 +104,17 @@ const App = ()  => {
         <Link style={padding} to='/'>home</Link>
         <Link style={padding} to='/notes'>notes</Link>
         <Link style={padding} to='/users'>users</Link>
+        {user 
+          ? <em>{user} logged in </em>
+          : <Link style={padding} to='/login'>login</Link>
+        }
       </div>
       <Routes>
         <Route path='/'       element={<Home />}/>
         <Route path='/notes'  element={<Notes notes={notes}/>} />
-        <Route path='/users'  element={<User />} />
+        <Route path='/users'  element={user ? <User /> : <Navigate replace to='/login' />} />
         <Route path='/notes/:id' element={<Note notes={notes}/>} />
+        <Route path='/login' element={<Login onLogin={login}/>} />
       </Routes>
       <div>
         <i>Note app, Department of Computer Science 2023</i>
