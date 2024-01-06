@@ -1,7 +1,34 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react'
-import { BrowserRouter as Router, 
-         Routes, Route, Link, useParams, useNavigate, Navigate
-} from 'react-router-dom'
+import {  Routes, 
+          Route, 
+          Link, 
+          Navigate,  
+          useNavigate, 
+          useMatch 
+  } from 'react-router-dom'
+
+
+const initialNotes = [
+  {
+    id: 1,
+    content: 'HTML is easy',
+    important: true,
+    user: 'Matti Luukkainen'
+  },
+  {
+    id: 2,
+    content: 'Browser can execute only JavaScript',
+    important: false,
+    user: 'Matti Luukkainen'
+  },
+  {
+    id: 3,
+    content: 'Most important methods of HTTP-protocol are GET and POST',
+    important: true,
+    user: 'Arto Hellas'
+  }
+]
 
 const Home = () => (
   <div>
@@ -22,9 +49,7 @@ const Notes = ({notes}) => (
   </div>
 )
 
-const Note = ({notes}) => {
-  const id = useParams().id
-  const note = notes.find(n => n.id === Number(id))
+const Note = ({ note }) => {
   return (
     <div>
       <h4>{note.content}</h4>
@@ -48,6 +73,7 @@ const User = () => (
 
 const Login = (props) => {
   const navigate = useNavigate()
+
   const onSubmit = (event) => {
     event.preventDefault()
     props.onLogin('mluukkai')
@@ -58,8 +84,8 @@ const Login = (props) => {
     <div>
       <h2>login</h2>
       <form onSubmit={onSubmit}>
-        <div>username<input type='text'/></div>
-        <div>password<input type='password'/></div>
+        <div>username <input type='text'/></div>
+        <div>password <input type='password'/></div>
         <div><button type='submit'>login</button></div>
       </form>
     </div>
@@ -67,28 +93,14 @@ const Login = (props) => {
 }
 
 const App = ()  => {
-  
   const [user,setUser] = useState(null)
-  const [notes,setNotes] = useState([
-    {
-      id: 1,
-      content: 'HTML is easy',
-      important: true,
-      user: 'Matti Luukkainen'
-    },
-    {
-      id: 2,
-      content: 'Browser can execute only JavaScript',
-      important: false,
-      user: 'Matti Luukkainen'
-    },
-    {
-      id: 3,
-      content: 'Most important methods of HTTP-protocol are GET and POST',
-      important: true,
-      user: 'Arto Hellas'
-    }
-  ])
+  const [notes,setNotes] = useState(initialNotes)
+  
+
+  const match = useMatch('/notes/:id')
+  const note = match
+                ? notes.find(note => note.id === Number(match.params.id))
+                : null
 
   const login = (user) => {
     setUser(user)
@@ -98,28 +110,31 @@ const App = ()  => {
     padding : 5
   }
 
+  
+
   return (
-    <Router>
-      <div>
-        <Link style={padding} to='/'>home</Link>
-        <Link style={padding} to='/notes'>notes</Link>
-        <Link style={padding} to='/users'>users</Link>
-        {user 
-          ? <em>{user} logged in </em>
-          : <Link style={padding} to='/login'>login</Link>
-        }
-      </div>
-      <Routes>
-        <Route path='/'       element={<Home />}/>
-        <Route path='/notes'  element={<Notes notes={notes}/>} />
-        <Route path='/users'  element={user ? <User /> : <Navigate replace to='/login' />} />
-        <Route path='/notes/:id' element={<Note notes={notes}/>} />
-        <Route path='/login' element={<Login onLogin={login}/>} />
-      </Routes>
-      <div>
-        <i>Note app, Department of Computer Science 2023</i>
-      </div>
-    </Router>
+    <div>
+        <div>
+          <Link style={padding} to='/'>home</Link>
+          <Link style={padding} to='/notes'>notes</Link>
+          <Link style={padding} to='/users'>users</Link>
+          {user 
+            ? <em>{user} logged in </em>
+            : <Link style={padding} to='/login'>login</Link>
+          }
+        </div>
+        <Routes>
+          <Route path='/'       element={<Home />}/>
+          <Route path='/notes'  element={<Notes notes={notes}/>} />
+          <Route path='/users'  element={user ? <User /> : <Navigate replace to='/login' />} />
+          <Route path='/notes/:id' element={<Note note={note}/>} />
+          <Route path='/login' element={<Login onLogin={login}/>} />
+        </Routes>
+      <footer>
+          <br />
+          <em>Note app, Department of Computer Science 2024</em>
+      </footer>
+    </div>
   )
 }
 
