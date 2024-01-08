@@ -18,8 +18,8 @@ const useFeild = (type) => {
 const App = () => {
 
   const name = useFeild('text')
-  const born = useFeild('text')
-  const height = useFeild('text')
+  const born = useFeild('date')
+  const height = useFeild('number')
 
   return (
     <div>
