@@ -3,12 +3,15 @@ import { getNotes,createNotes,updateNotes } from './request'
  
 const App = () => {
   const queryClient = useQueryClient()
+
   const newNoteMutation = useMutation({
     mutationFn: createNotes,
-    onSuccess : () => {
-      queryClient.invalidateQueries({queryKey : ['notes']})
+    onSuccess : (newNote) => {
+      const notes = queryClient.getQueryData(['notes'])
+      queryClient.setQueryData(['notes'],notes.concat(newNote))
     }
   })
+
   const updateNoteMutation = useMutation({
     mutationFn: updateNotes,
     onSuccess : () => {
@@ -31,8 +34,6 @@ const App = () => {
     queryKey : ['notes'],
     queryFn : getNotes
   })
-
-  console.log(JSON.parse(JSON.stringify(result)))
 
   if(result.isLoading){
     return <div>loading data...</div>

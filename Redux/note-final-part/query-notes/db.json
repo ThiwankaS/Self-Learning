@@ -11,9 +11,14 @@
       "id": 2
     },
     {
-      "content": "testing note app",
+      "content": "Marmid is amazing",
       "important": false,
       "id": 3
+    },
+    {
+      "content": "Single page, huh ?",
+      "important": true,
+      "id": 4
     }
   ]
 }
