@@ -1,12 +1,22 @@
 import React from 'react'
+import axios from 'axios'
 
 class App extends React.Component {
   constructor (props){
     super(props)
     this.state = {
       anecdotes : [],
-      current : 0
+      current : 1
     }
+  }
+  componentDidMount = () => {
+    axios.get('http://localhost:3000/anecdotes').then(response => {
+      this.setState({anecdotes : response.data})
+    })
+  }
+  handleClick = () => {
+    const index = Math.floor(Math.random() * this.state.anecdotes.length)
+    this.setState({current : index})
   }
   render(){
     if (this.state.anecdotes.length===0){
@@ -18,7 +28,7 @@ class App extends React.Component {
           <div>
             {this.state.anecdotes[this.state.current].content}
           </div>
-          <button>next</button>
+          <button onClick={this.handleClick}>next</button>
       </div>
     )
   }
