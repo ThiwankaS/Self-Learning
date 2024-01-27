@@ -1,0 +1,17 @@
+{
+  "name": "phone_book",
+  "version": "1.0.0",
+  "description": "phone_book excercise",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Thiwanka Somachandra",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@apollo/server": "^4.10.0",
+    "graphql": "^16.8.1"
+  }
+}
