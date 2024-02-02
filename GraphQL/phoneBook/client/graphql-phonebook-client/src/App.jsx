@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { gql,useQuery } from '@apollo/client'
+import Persons from './components/Persons'
 
 const ALL_PERSONS = gql`
   query {
@@ -24,16 +25,5 @@ const App = () => {
     <Persons persons={result.data.allPersons} />
   </div>
 )}
-
-const Persons = ({ persons }) => {
-  return (
-    <div>
-      <h3>
-        Persons
-      </h3>
-      {persons.map(p => <div key={p.id}>{p.name} {p.phone}</div>)}
-    </div>
-  )
-}
 
 export default App
