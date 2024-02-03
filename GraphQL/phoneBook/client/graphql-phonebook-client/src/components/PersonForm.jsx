@@ -1,15 +1,22 @@
+/* eslint-disable react/prop-types */
 import { useMutation } from '@apollo/client'
 import { useState } from 'react'
 import { ALL_PERSONS, CREATE_PERSON } from '../assets/queries'
 
 
-const PersonForm = () => {
+const PersonForm = ({ setError }) => {
     const [ name,setName ] = useState('')
     const [ phone,setPhone ] = useState('')
     const [ street,setStreet ] = useState('')
     const [ city,setCity ] = useState('')
 
-    const [ createPerson ] = useMutation(CREATE_PERSON, { refetchQueries : [ { query : ALL_PERSONS }]})
+    const [ createPerson ] = useMutation(CREATE_PERSON, { 
+        refetchQueries : [ { query : ALL_PERSONS }],
+        onError : (error) => {
+            const message = error.graphQLErrors.map(e => e.message).join('\n')
+            setError(message)
+        }
+    })
 
     const submit = (event) => {
         event.preventDefault()
