@@ -53,7 +53,7 @@ const Persons = ({ persons }) => {
             {persons.map(p => <div key={p.id}>
                 {p.name} {p.phone}
                 <button onClick={()=>setNameToSearch(p.name)}>
-                    show address
+                     show address
                 </button>
                 </div>)}
         </div>
