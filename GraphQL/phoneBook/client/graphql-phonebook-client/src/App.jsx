@@ -1,17 +1,10 @@
 /* eslint-disable react/prop-types */
-import { gql,useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import { ALL_PERSONS } from './assets/queries'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 
-const ALL_PERSONS = gql`
-  query {
-    allPersons{
-      name,
-      phone,
-      id
-    }
-  }
-`
+
 
 const App = () => {
 
