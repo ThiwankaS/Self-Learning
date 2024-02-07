@@ -1,18 +1,22 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { ALL_PERSONS, EDIT_NUMBER } from '../assets/queries'
+import { EDIT_NUMBER } from '../assets/queries'
 
 const PhoneForm = () => {
     const [ name,setName ] = useState('')
     const [ phone,setPhone ] = useState('')
 
-    const [ changeNumber ] = useMutation(EDIT_NUMBER)
+    const [ changeNumber,result ] = useMutation(EDIT_NUMBER)
+   
+    if(result.data === null) {
+        console.log('Fuck this is null')
+    }
 
-    const submit = (event) => {
+    const submit = async (event) => {
         event.preventDefault()
         changeNumber({
-            variables : { name, phone },
-            refetchQueries : [ { query : ALL_PERSONS }]
+            variables : { name, phone }
         })
         setName('')
         setPhone('')
