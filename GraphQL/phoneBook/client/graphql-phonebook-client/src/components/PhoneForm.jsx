@@ -7,11 +7,8 @@ const PhoneForm = () => {
     const [ name,setName ] = useState('')
     const [ phone,setPhone ] = useState('')
 
-    const [ changeNumber,result ] = useMutation(EDIT_NUMBER)
+    const [ changeNumber ] = useMutation(EDIT_NUMBER)
    
-    if(result.data === null) {
-        console.log('Fuck this is null')
-    }
 
     const submit = async (event) => {
         event.preventDefault()
