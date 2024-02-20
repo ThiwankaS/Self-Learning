@@ -148,10 +148,17 @@ const resolvers = {
       }
       return person
     },
-    editNumber : async (root,args) => {
+    editNumber : async (root,args, { currentUser }) => {
       const person = await Person.findOne({ name : args.name })
-      person.phone = args.phone
+      if(!currentUser){
+        throw new GraphQLError(`not authenticated`,{
+          extensions : {
+            code : 'BAD_USER_INPUT'
+          }
+        })
+      }
       try {
+        person.phone = args.phone
         await person.save()
       } catch (error) {
         throw new GraphQLError(`Saving number failed!`,{
