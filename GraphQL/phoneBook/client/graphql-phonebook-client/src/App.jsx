@@ -1,19 +1,27 @@
 /* eslint-disable react/prop-types */
-import { useApolloClient, useQuery } from '@apollo/client'
-import { ALL_PERSONS } from './assets/queries'
+import { useApolloClient, useQuery, useSubscription } from '@apollo/client'
+import { ALL_PERSONS,PERSON_ADDED } from './assets/queries'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import PhoneForm from './components/PhoneForm'
 import LoginForm from './components/LoginForm'
-import { useState } from 'react'  
+import { useState } from 'react'
+import { updateCache } from './assets/helper'  
 
 const App = () => {
 
   const [ errorMessage,setErrorMessage ] = useState(null)
   const [ token,setToken ] = useState(null)
-  const result = useQuery(ALL_PERSONS)
   const client = useApolloClient()
-
+  const result = useQuery(ALL_PERSONS)
+  useSubscription(PERSON_ADDED,{
+    onData : ({ data, client }) => {
+      const addedPerson = data.data.personAdded
+      notify(`${addedPerson.name} added`)
+      updateCache(client.cache, { query : ALL_PERSONS }, addedPerson)
+    }
+  })
+  
   if(result.loading){
     return <div>loading...</div>
   }
