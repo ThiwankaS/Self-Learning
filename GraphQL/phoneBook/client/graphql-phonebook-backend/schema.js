@@ -6,7 +6,8 @@ const typeDefs = `
   type Person {
     name: String!
     phone: String
-    address : Address!
+    address : Address!,
+    friendOf : [User!]!,
     id: ID!
   }
   type User {

@@ -27,6 +27,14 @@ const resolvers = {
           street : root.street,
           city : root.city
         }
+      },
+      friendOf : async (root) => {
+        const friends = await User.find({
+          friends : {
+            $in : [root._id]
+          }
+        })
+        return friends
       }
     },
     Mutation : {
