@@ -1,5 +1,5 @@
 import express from 'express';
-import { calculator } from './calculator';
+import { Operation,calculator } from './calculator';
 
 const app = express();
 
@@ -19,8 +19,7 @@ app.post('/calculate',( req,res ) => {
     if( !op || !(op === 'multiply' || 'add' || 'divide')){
         return res.status(400).send({ error : ' argument(s) malformatted '})
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const result = calculator( Number(value1), Number(value2), op );
+    const result = calculator( Number(value1), Number(value2), op as Operation );
     return res.send({ result });
 });
 
