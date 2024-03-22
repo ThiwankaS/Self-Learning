@@ -11,6 +11,7 @@ app.get('/ping',(_req,res) => {
 });
 
 app.use('/api/diaries',diaryRouter);
+app.use('/api/diaries/:id',diaryRouter);
 
 const PORT = 3000;
 
