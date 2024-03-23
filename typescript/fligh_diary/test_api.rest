@@ -11,3 +11,33 @@ Content-Type: application/json
   "visibility": "good",
   "comment" : "Nice this is working"
 }
+###
+POST http://localhost:3000/api/diaries
+Content-Type: application/json
+
+{
+  "date": "2024-03-22",
+  "weather": "sunny",
+  "visibility": "awsome",
+  "comment" : "Nice this is working"
+}
+###
+POST http://localhost:3000/api/diaries
+Content-Type: application/json
+
+{
+  "date": "2024-03-22",
+  "weather": "foggy",
+  "visibility": "good",
+  "comment" : "Nice this is working"
+}
+###
+POST http://localhost:3000/api/diaries
+Content-Type: application/json
+
+{
+  "date": "abcd",
+  "weather": "sunny",
+  "visibility": "good",
+  "comment" : "Nice this is working"
+}
